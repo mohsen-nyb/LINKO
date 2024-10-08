@@ -92,7 +92,7 @@ class Mega(BaseModel):
 
 
         #llm
-        api_key = "sk-proj-x3954WNtiMxjmkMn3MqUT3BlbkFJBClEYjfsHOBmWM5cB2Vx"
+        api_key = "**********************"
         self.client = OpenAI(api_key=api_key)
         self.llm_model = llm_model
         self.gpt_embd_path = gpt_embd_path
