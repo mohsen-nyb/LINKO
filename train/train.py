@@ -1,6 +1,6 @@
 from preprocessing.MIMIC_preprocessing import preprocessing_seq_diag_pred
 from tasks.diagnosis_prediction import sequential_diagnosis_prediction_mimic3
-from best_models.Best_model_hypergraph_bugged_selfloop_attention_node_new_prompt2 import Mega
+from model.OnCoLAP import Mega
 from pyhealth.trainer import Trainer
 import torch
 import numpy as np
