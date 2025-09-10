@@ -46,7 +46,7 @@ def nfold_experiment(mimic3sample, epochs , ds_size_ratio, print_results=True, r
             torch.cuda.manual_seed(seed)
 
         train_loader, val_loader, test_loader = preprocessing_seq_diag_pred(
-            mimic3sample, train_ratio=0.8, val_ratio=0.2, test_ratio=0, batch_size=252, print_stats=False, seed=seed
+            mimic3sample, train_ratio=0.8, val_ratio=0.1, test_ratio=0.1, batch_size=252, print_stats=False, seed=seed
         )
         print('preprocessing done!')
 
