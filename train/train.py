@@ -9,6 +9,7 @@ from utils.eval_test import evaluate, get_group_labels1, calculate_confidence_in
 import os
 from utils.data import customized_set_task_mimic3
 import random
+from pyhealth.datasets import split_by_patient, get_dataloader
 
 
 def nfold_experiment(mimic3sample, epochs , ds_size_ratio, print_results=True, record_results=True):
@@ -45,9 +46,12 @@ def nfold_experiment(mimic3sample, epochs , ds_size_ratio, print_results=True, r
         if torch.cuda.is_available():
             torch.cuda.manual_seed(seed)
 
-        train_loader, val_loader, test_loader = preprocessing_seq_diag_pred(
-            mimic3sample, train_ratio=0.8, val_ratio=0.1, test_ratio=0.1, batch_size=252, print_stats=False, seed=seed
-        )
+        train_ratio, val_ratio, test_ratio = 0.8,0.1,0.1
+        train_ds, val_ds, test_ds = split_by_patient(mimic3sample, [train_ratio, val_ratio, test_ratio], seed=seed)
+        train_loader = get_dataloader(train_ds, batch_size=252, shuffle=True)
+        val_loader = get_dataloader(val_ds, batch_size=252, shuffle=False)
+        test_loader = get_dataloader(test_ds, batch_size=252, shuffle=False)
+
         print('preprocessing done!')
 
         # Stage 3: define model
@@ -60,6 +64,7 @@ def nfold_experiment(mimic3sample, epochs , ds_size_ratio, print_results=True, r
 
         model = Mega(
             dataset=mimic3sample,
+            train_dataset = train_ds
             feature_keys=["conditions", "drugs", "procedures"],
             label_key="label",
             mode="multilabel",
