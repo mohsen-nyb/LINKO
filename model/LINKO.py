@@ -22,7 +22,7 @@ import random
 
 
 class Mega(BaseModel):
-    def __init__(self, dataset: List[BaseEHRDataset], feature_keys: List[str], label_key: str, mode: str,
+    def __init__(self, dataset: List[BaseEHRDataset], train_dataset: List[BaseEHRDataset], feature_keys: List[str], label_key: str, mode: str,
                  embedding_dim=128, dropout = 0.5, nheads=1, nlayers=1,
                  G_dropout = 0.5, n_G_heads=1, n_G_layers=1,threshold3=0.00, threshold2=0.02, threshold1=0.12,
                  llm_model = 'text-embedding-3-small', gpt_embd_path='../saved_files/gpt_code_emb/tx-emb-3-small/',
@@ -35,6 +35,7 @@ class Mega(BaseModel):
         random.seed(seed)
         self.device1 = device
         self.ds_size_ratio = ds_size_ratio
+        self.train_dataset = train_dataset
         # Set seed for CUDA operations
         if torch.cuda.is_available():
             torch.cuda.manual_seed(seed)
@@ -455,7 +456,7 @@ class Mega(BaseModel):
 
     def get_co_occurrence(self):
 
-        data = self.dataset.samples
+        data = self.train_dataset.samples
 
         # Flatten the data into a DataFrame
         rows = []
